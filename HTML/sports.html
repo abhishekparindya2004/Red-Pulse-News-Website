@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>RedPulse — Sports</title>
+  <link rel="stylesheet" href="style.css"/>
+    <link rel="icon" href="images/logo.png">
+</head>
+<body>
+
+<div class="topbar">
+  <div class="wrap">
+    <div class="left">
+      <span class="badge"><span class="dot"></span> LIVE</span>
+      <span>Sports Desk • Verified Updates</span>
+    </div>
+    <div class="right">
+      <a href="#" onclick="RP_UI.openAuth('signin')">Sign In</a>
+    </div>
+  </div>
+</div>
+
+<header class="site-header">
+  <div class="wrap">
+    <div class="brand">
+      <div class="logo-icon">RP</div>
+      <div>
+        <div class="logo-text">RedPulse</div>
+        <div class="small">Sports</div>
+      </div>
+    </div>
+
+    <nav class="nav">
+      <a href="index.html">Home</a>
+      <a href="world.html">World</a>
+      <a href="technology.html">Technology</a>
+      <a href="sports.html" class="active">Sports</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+
+    <div class="header-actions">
+      <div class="search" title="Search within this section page">
+        <span style="font-weight:900;opacity:.7">⌕</span>
+        <input id="siteSearch" type="search" placeholder="Search Sports stories..."/>
+      </div>
+
+      <div id="signedOutActions" style="display:flex;gap:10px;align-items:center">
+        <button class="ghost-btn" onclick="RP_UI.openAuth('signin')">Sign In</button>
+        <button class="primary-btn" onclick="RP_UI.openAuth('signup')">Create Account</button>
+      </div>
+
+      <div id="signedInActions" style="display:none;gap:10px;align-items:center">
+        <span class="badge" style="color:#fff">Hi, <span id="whoLabel">User</span> 👋</span>
+        <button class="primary-btn" onclick="RP_UI.logout()">Logout</button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="ticker">
+  <div class="wrap">
+    <div class="label">SPORTS</div>
+    <div class="scroll">
+      <span>Sports desk: highlights + tactics • Fast headlines with simple tactical explanations • Use search to filter stories •</span>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="grid">
+
+    <main class="card pad">
+      <div class="h">
+        <h2>Sports desk: highlights + tactics</h2>
+        <div class="small">Fast headlines with simple tactical explanations</div>
+      </div>
+
+      <div class="news-grid">
+        <article class="news-card" data-search="football championship finals draw global attention what made the match tactical and why the press mattered">
+          <img src="images/s1.png" alt="">
+          <div class="body">
+            <span class="tag">Football</span>
+            <h3>Championship finals draw global attention</h3>
+            <p>What made the match tactical — and why the press mattered.</p>
+            <div class="meta-row"><span>5 min</span><a class="readmore" href="index.html#latest">More →</a></div>
+          </div>
+        </article>
+
+        <article class="news-card" data-search="basketball playoffs heat up with unexpected upsets momentum swings rotations and clutch defense breakdown">
+          <img src="images/s2.png" alt="">
+          <div class="body">
+            <span class="tag">Basketball</span>
+            <h3>Playoffs heat up with unexpected upsets</h3>
+            <p>Momentum swings, rotations, and clutch defense breakdown.</p>
+            <div class="meta-row"><span>4 min</span><a class="readmore" href="index.html#latest">More →</a></div>
+          </div>
+        </article>
+
+        <article class="news-card" data-search="tennis grand slam highlights a new champion emerges the key improvements that changed everything serve mental game">
+          <img src="images/s3.png" alt="">
+          <div class="body">
+            <span class="tag">Tennis</span>
+            <h3>Grand Slam highlights: a new champion emerges</h3>
+            <p>The key improvements that changed everything: serve + mental game.</p>
+            <div class="meta-row"><span>5 min</span><a class="readmore" href="index.html#latest">More →</a></div>
+          </div>
+        </article>
+
+      
+      </div>
+    </main>
+
+     <aside class="card">
+      <div class="widget">
+        <div class="h">
+          <h3>Most Read</h3>
+          <span class="small">Trending</span>
+        </div>
+
+        <div class="list">
+          <div>
+            <a href="index.html#latest">Finals night hits record viewership across multiple regions</a>
+            <div class="li">What went viral + tactical breakdown.</div>
+          </div>
+          <div>
+            <a href="sports.html">Powerplay strategies: why early wickets change games</a>
+            <div class="li">Field settings + run-rate pressure, simplified.</div>
+          </div>
+          <div>
+            <a href="sports.html">Playoffs heat up with unexpected upsets</a>
+            <div class="li">Rotations, momentum swings, clutch defense.</div>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+  </div>
+</div>
+
+<footer>
+  <div class="wrap">
+    <div>
+      <h4>About RedPulse</h4>
+         </div>
+    <div>
+      <h4>Sections</h4>
+      <p>Home • World • Technology • Sports</p>
+    </div>
+    <div>
+      <h4>Support</h4>
+      <p>Contact us for feedback and issues. This is a front-end demo.</p>
+    </div>
+  </div>
+  <div class="bottom">
+    <span>© 2026 RedPulse PVT & LTD</span>
+    <span>Section: Sports</span>
+  </div>
+</footer>
+
+
+<div class="modal" id="authModal" aria-hidden="true">
+  <div class="panel" role="dialog" aria-modal="true">
+    <div class="side">
+      <div class="inner">
+        <h2>Account</h2>
+        <p>Sign in to save stories. Demo-only storage (browser LocalStorage).</p>
+        <div style="margin-top:14px" class="small">Password rule: 6+ chars, letters + numbers.</div>
+      </div>
+    </div>
+
+    <div class="content">
+      <div class="top">
+        <div>
+          <div style="font-weight:1000;font-size:16px">Sign in / Create</div>
+          <div class="small">Works on every page</div>
+        </div>
+        <button id="authClose" class="close" aria-label="Close">✕</button>
+      </div>
+
+      <div id="authInfo" class="ok"></div>
+
+      <div class="tabs">
+        <button class="tab active" data-tab="signin">Sign In</button>
+        <button class="tab" data-tab="signup">Create Account</button>
+      </div>
+
+      <div id="signinPanel">
+        <div id="signinErr" class="err"></div>
+        <form id="signinForm" class="form">
+          <div>
+            <label>Email</label>
+            <input id="siEmail" type="email" required placeholder="you@example.com"/>
+          </div>
+          <div>
+            <label>Password</label>
+            <input id="siPassword" type="password" required placeholder="••••••••"/>
+          </div>
+          <div class="help">
+            <a href="#" id="forgotLink">Forgot password?</a>
+            <span class="small">Demo</span>
+          </div>
+          <button class="primary-btn" type="submit">Sign In</button>
+        </form>
+      </div>
+
+      <div id="signupPanel" class="hide">
+        <div id="signupErr" class="err"></div>
+        <form id="signupForm" class="form">
+          <div>
+            <label>Full name</label>
+            <input id="suName" type="text" required placeholder="Your name"/>
+          </div>
+          <div>
+            <label>Email</label>
+            <input id="suEmail" type="email" required placeholder="you@example.com"/>
+          </div>
+          <div class="row2">
+            <div>
+              <label>Password</label>
+              <input id="suPassword" type="password" required placeholder="letters + numbers"/>
+            </div>
+            <div>
+              <label>Confirm</label>
+              <input id="suPassword2" type="password" required placeholder="repeat password"/>
+            </div>
+          </div>
+          <button class="primary-btn" type="submit">Create Account</button>
+          <div class="small">Demo terms: stored only in this browser.</div>
+        </form>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>

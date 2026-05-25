@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>RedPulse | Headlines + Marketplace</title>
+  <link rel="stylesheet" href="style.css"/>
+  <link rel="icon" href="images/logo.png">
+
+  <style>
+    *{ margin:0; padding:0; box-sizing:border-box; }
+    html, body { width:100%; height:100%; overflow-x:hidden; }
+
+    
+    .container{ width:100%; max-width:100%; margin:0; padding:0 20px; }
+    .wrap{ width:100%; max-width:1400px; margin:auto; }
+    .grid{ width:100%; display:grid; grid-template-columns:1fr; }
+
+    .topbar, .site-header, .ticker, footer{ width:100%; }
+
+
+    .news-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit, minmax(320px, 1fr));
+      gap:20px;
+      width:100%;
+    }
+    .market-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));
+      gap:20px;
+      width:100%;
+    }
+
+ 
+    #welcome-screen{
+      position:fixed;
+      top:0; left:0;
+      width:100vw; height:100vh;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      flex-direction:column;
+      z-index:9999;
+    }
+
+
+.admin-fab{
+  position:fixed;
+  right:22px;
+  bottom:22px;
+  z-index:9998;
+
+  display:flex;
+  align-items:center;
+  gap:10px;
+
+  padding:12px 18px;
+  border-radius:999px;
+
+  background:#e50914;      
+  color:#ffffff;           
+  text-decoration:none;
+
+  font-weight:900;
+  letter-spacing:.3px;
+
+  box-shadow:0 10px 25px rgba(0,0,0,.4);
+  transition:0.25s ease;
+}
+
+.admin-fab:hover{
+  background:#c40812;   
+  transform:translateY(-2px);
+}
+
+.admin-fab .icon{
+  width:38px;
+  height:38px;
+  border-radius:10px;
+  display:grid;
+  place-items:center;
+
+  background:rgba(255,255,255,0.2);
+  color:#ffffff;          
+  font-size:18px;
+}
+
+.admin-fab .label{
+  color:#ffffff;         
+}
+
+.admin-fab .label small{
+  color:#ffffff;
+  opacity:0.85;
+}
+  </style>
+</head>
+
+<body>
+
+
+<div id="welcome-screen">
+  <div class="globe-container">
+    <svg viewBox="0 0 100 100" fill="none">
+      <circle cx="50" cy="50" r="45" stroke="white" stroke-width="3"/>
+      <ellipse cx="50" cy="50" rx="45" ry="20" stroke="white" stroke-width="2"/>
+      <ellipse cx="50" cy="50" rx="20" ry="45" stroke="white" stroke-width="2"/>
+    </svg>
+  </div>
+  <div class="welcome-title">RedPulse</div>
+  <div class="welcome-sub">Global News + Marketplace</div>
+</div>
+
+<div class="topbar">
+  <div class="wrap">
+    <div class="left">
+      <span class="badge"><span class="dot"></span> LIVE</span>
+      <span>Breaking updates • Fast • Verified</span>
+      <a href="#newsletter">Newsletter</a>
+      <a href="#market">Marketplace</a>
+    </div>
+    <div class="right">
+      <a href="contact.html">Help</a>
+      <span style="opacity:.8">|</span>
+      <a href="#" onclick="RP_UI.openAuth('signin')">Sign In</a>
+    </div>
+  </div>
+</div>
+
+<header class="site-header">
+  <div class="wrap">
+    <div class="brand">
+      <div class="logo-icon">RP</div>
+      <div>
+        <div class="logo-text">RedPulse</div>
+      </div>
+    </div>
+
+    <nav class="nav">
+      <a href="index.html" class="active">Home</a>
+      <a href="world.html">World</a>
+      <a href="technology.html">Technology</a>
+      <a href="sports.html">Sports</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+
+    <div class="header-actions">
+      <div class="search" title="Search stories/products on this page">
+        <span style="font-weight:900;opacity:.7">⌕</span>
+        <input id="siteSearch" type="search" placeholder="Search headlines, topics, products..."/>
+      </div>
+
+      <button id="cartBtn" class="icon-btn" title="Cart">
+        🛒 <span id="cartCount">0</span>
+      </button>
+
+      <div id="signedOutActions" style="display:flex;gap:10px;align-items:center">
+        <button class="ghost-btn" onclick="RP_UI.openAuth('signin')">Sign In</button>
+        <button class="primary-btn" onclick="RP_UI.openAuth('signup')">Create Account</button>
+      </div>
+
+      <div id="signedInActions" style="display:none;gap:10px;align-items:center">
+        <span class="badge" style="color:#fff">Hi, <span id="whoLabel">User</span> 👋</span>
+        <button class="ghost-btn" onclick="RP_UI.openAuth('signin')">Switch</button>
+        <button class="primary-btn" onclick="RP_UI.logout()">Logout</button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="ticker">
+  <div class="wrap">
+    <div class="label">BREAKING</div>
+    <div class="scroll">
+      <span>
+        Sri Lanka • Markets • AI • Sports • Tech • World • Business • 
+        Subscribe to RedPulse Weekly • New: Marketplace with subscriptions, e-books, and merch •
+        Sign in to checkout •
+      </span>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="grid">
+
+    <div class="card pad">
+      <div class="h">
+        <h2>Top Stories</h2>
+        <div class="small">Updated continuously</div>
+      </div>
+
+      <div class="lead">
+   <div class="lead-media" style="background-image:url('images/main.jpeg')">
+          <div class="meta">
+            <span class="pill">WORLD • LIVE</span>
+            <h1>Global leaders set new climate targets as talks enter final round</h1>
+            <p>Inside the negotiations, the key promises, and what happens next. Analysis + quick explainers for students.</p>
+            <div class="meta-row" style="color:rgba(255,255,255,.85);margin-top:12px">
+              <span>6 min read</span>
+              <a class="readmore" href="#latest" style="color:#fff">Read the latest ↓</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="lead-list">
+          <div class="story" data-search="technology ai governance regulations policy summit">
+            <img src="images/tec.jpeg" alt="tech">
+            <div>
+              <div class="k">TECH</div>
+              <h3>AI governance: what the new rules mean for developers</h3>
+              <p>Key definitions, compliance basics, and real-world examples.</p>
+            </div>
+          </div>
+
+          <div class="story" data-search="sports finals viewership records championship">
+            <img src="images/sport.jpeg" alt="sport">
+            <div>
+              <div class="k">SPORTS</div>
+              <h3>Finals night hits record viewership across multiple regions</h3>
+              <p>Moments that went viral, plus tactical breakdown.</p>
+            </div>
+          </div>
+
+          <div class="story" data-search="business markets inflation rates currency economics">
+            <img src="images/business.jpeg" alt="business">
+            <div>
+              <div class="k">BUSINESS</div>
+              <h3>Markets steady as investors watch inflation signals</h3>
+              <p>A quick explainer for beginners: CPI, rates, and impact.</p>
+            </div>
+          </div>
+
+          <div class="story" data-search="health mental wellness productivity study guide">
+            <img src="images/life.jpeg" alt="life">
+            <div>
+              <div class="k">LIFE</div>
+              <h3>Study smarter: 5 routines that protect focus (no burnout)</h3>
+              <p>Practical habits that actually fit a student schedule.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="latest" class="section-title"><span class="bar"></span>Latest</div>
+
+      <div class="news-grid">
+        <article class="news-card" data-search="world diplomacy embassy security talks">
+          <img src="images/latest 1.jpeg" alt="">
+          <div class="body">
+            <span class="tag">World</span>
+            <h3>Diplomacy teams push for de-escalation after weekend tensions</h3>
+            <p>Officials say talks will continue through the week, with travel advisories updated.</p>
+            <div class="meta-row"><span>4 min</span><a class="readmore" href="world.html">Open →</a></div>
+          </div>
+        </article>
+
+        <article class="news-card" data-search="technology cybersecurity threats detection systems">
+          <img src="images/latest 2.jpeg" alt="">
+          <div class="body">
+            <span class="tag">Technology</span>
+            <h3>New cyber threats: what small teams should do first</h3>
+            <p>Simple checklist: MFA, backups, patching, and monitoring—done the right way.</p>
+            <div class="meta-row"><span>5 min</span><a class="readmore" href="technology.html">Open →</a></div>
+          </div>
+        </article>
+
+        <article class="news-card" data-search="sports basketball playoffs upsets highlights">
+          <img src="images/latest 3.jpeg" alt="">
+          <div class="body">
+            <span class="tag">Sports</span>
+            <h3>Playoffs surprise: underdogs force a game seven</h3>
+            <p>Defense wins? The numbers and the turning point moments.</p>
+            <div class="meta-row"><span>3 min</span><a class="readmore" href="sports.html">Open →</a></div>
+          </div>
+        </article>
+      </div>
+
+      <div id="market" class="section-title" style="margin-top:22px"><span class="bar"></span>Marketplace (E-Business)</div>
+      <div class="small">Add items to cart → Sign in → Checkout (demo). Works without backend using LocalStorage.</div>
+
+      <div class="market-grid" style="margin-top:14px">
+
+        <div class="product" data-search="subscription premium monthly journalism plan">
+          <img src="images/m1.jpeg" alt="">
+          <div class="body">
+            <div style="display:flex;justify-content:space-between;gap:10px;align-items:center">
+              <span class="tag">Subscription</span>
+              <span class="price">LKR 1,250</span>
+            </div>
+            <h3 style="font-size:16px;line-height:1.25">RedPulse Premium (Monthly)</h3>
+            <p class="small">Ad-light reading, saved stories, and weekly briefings.</p>
+            <div class="row">
+              <button class="primary-btn" onclick="RP_UI.addToCart({id:'sub_month',title:'Premium Monthly',price:1250,qty:1,img:'https://images.pexels.com/photos/518543/pexels-photo-518543.jpeg?auto=compress&cs=tinysrgb&w=800'})">Add</button>
+              <span class="small">Instant access</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="product" data-search="ebook ai study guide notes developers">
+          <img src="images/m2.jpeg" alt="">
+          <div class="body">
+            <div style="display:flex;justify-content:space-between;gap:10px;align-items:center">
+              <span class="tag">E-Book</span>
+              <span class="price">LKR 950</span>
+            </div>
+            <h3 style="font-size:16px;line-height:1.25">AI Governance — Student Guide</h3>
+            <p class="small">Simple explanations, examples, and exam-style Q&A.</p>
+            <div class="row">
+              <button class="primary-btn" onclick="RP_UI.addToCart({id:'ebook_ai',title:'AI Governance Student Guide',price:950,qty:1,img:'https://images.pexels.com/photos/3861969/pexels-photo-3861969.jpeg?auto=compress&cs=tinysrgb&w=800'})">Add</button>
+              <span class="small">PDF download</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="product" data-search="merch hoodie redpulse brand clothing">
+          <img src="images/hoodie.png" alt="">
+          <div class="body">
+            <div style="display:flex;justify-content:space-between;gap:10px;align-items:center">
+              <span class="tag">Merch</span>
+              <span class="price">LKR 4,500</span>
+            </div>
+            <h3 style="font-size:16px;line-height:1.25">RedPulse Hoodie</h3>
+            <p class="small">Comfort fit. Limited edition (demo item).</p>
+            <div class="row">
+              <button class="primary-btn" onclick="RP_UI.addToCart({id:'hoodie',title:'RedPulse Hoodie',price:4500,qty:1,img:'https://images.pexels.com/photos/6311607/pexels-photo-6311607.jpeg?auto=compress&cs=tinysrgb&w=800'})">Add</button>
+              <span class="small">Sizes S-XL</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="product" data-search="ads business listing sponsored">
+          <img src="images/m4.jpeg" alt="">
+          <div class="body">
+            <div style="display:flex;justify-content:space-between;gap:10px;align-items:center">
+              <span class="tag">Business</span>
+              <span class="price">LKR 7,900</span>
+            </div>
+            <h3 style="font-size:16px;line-height:1.25">Sponsored Post Package</h3>
+            <p class="small">1 featured tile + social shoutout (demo).</p>
+            <div class="row">
+              <button class="primary-btn" onclick="RP_UI.addToCart({id:'sponsored',title:'Sponsored Post Package',price:7900,qty:1,img:'https://images.pexels.com/photos/3183150/pexels-photo-3183150.jpeg?auto=compress&cs=tinysrgb&w=800'})">Add</button>
+              <span class="small">48h slot</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div id="newsletter" class="card pad" style="margin-top:18px">
+        <div class="h">
+          <h2>Newsletter</h2>
+          <div class="small">One email per week. No spam.</div>
+        </div>
+        <div class="small">Get curated headlines, tech explainers, and sports highlights—perfect for quick daily reading.</div>
+        <form class="newsletter" onsubmit="event.preventDefault();alert('Subscribed ✅ (demo)')">
+          <input type="email" required placeholder="your@email.com"/>
+          <button class="primary-btn" type="submit">Subscribe</button>
+        </form>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+<footer>
+  <div class="wrap">
+    <div>
+      <h4>About RedPulse</h4>
+    </div>
+    <div>
+      <h4>Sections</h4>
+      <p>Home • World • Technology • Sports • Marketplace • Newsletter</p>
+    </div>
+    <div>
+      <h4>Support</h4>
+      <p>Need help? Use the Contact page. For demo purposes, checkout uses LocalStorage and shows an alert.</p>
+    </div>
+  </div>
+  <div class="bottom">
+    <span>© 2026 RedPulse PVT & LTD</span>
+  </div>
+</footer>
+
+
+<a class="admin-fab" href="admin.html" title="Go to Admin Panel">
+  <span class="icon">🛠️</span>
+  <span class="label">
+    Admin
+    <small>Dashboard</small>
+  </span>
+</a>
+
+<div class="modal" id="authModal" aria-hidden="true">
+  <div class="panel" role="dialog" aria-modal="true">
+    <div class="side">
+      <div class="inner">
+        <h2>Welcome back 👋</h2>
+        <p>
+          Sign in to save stories, manage subscriptions, and checkout from Marketplace.
+          This is a front-end demo: accounts are stored in your browser only.
+        </p>
+        <div style="margin-top:14px" class="small">Tip: password must contain letters + numbers (6+ chars).</div>
+      </div>
+    </div>
+
+    <div class="content">
+      <div class="top">
+        <div>
+          <div style="font-weight:1000;font-size:16px">Account</div>
+          <div class="small">Sign in or create a new account</div>
+        </div>
+        <button id="authClose" class="close" aria-label="Close">✕</button>
+      </div>
+
+      <div id="authInfo" class="ok"></div>
+
+      <div class="tabs">
+        <button class="tab active" data-tab="signin">Sign In</button>
+        <button class="tab" data-tab="signup">Create Account</button>
+      </div>
+
+      <div id="signinPanel">
+        <div id="signinErr" class="err"></div>
+        <form id="signinForm" class="form">
+          <div>
+            <label>Email</label>
+            <input id="siEmail" type="email" required placeholder="you@example.com"/>
+          </div>
+          <div>
+            <label>Password</label>
+            <input id="siPassword" type="password" required placeholder="••••••••"/>
+          </div>
+          <div class="help">
+            <a href="#" id="forgotLink">Forgot password?</a>
+            <span class="small">Demo only</span>
+          </div>
+          <button class="primary-btn" type="submit">Sign In</button>
+        </form>
+      </div>
+
+      <div id="signupPanel" class="hide">
+        <div id="signupErr" class="err"></div>
+        <form id="signupForm" class="form">
+          <div>
+            <label>Full name</label>
+            <input id="suName" type="text" required placeholder="Udara Akalanka"/>
+          </div>
+          <div>
+            <label>Email</label>
+            <input id="suEmail" type="email" required placeholder="you@example.com"/>
+          </div>
+          <div class="row2">
+            <div>
+              <label>Password</label>
+              <input id="suPassword" type="password" required placeholder="letters + numbers"/>
+            </div>
+            <div>
+              <label>Confirm</label>
+              <input id="suPassword2" type="password" required placeholder="repeat password"/>
+            </div>
+          </div>
+          <button class="primary-btn" type="submit">Create Account</button>
+          <div class="small">By creating an account you agree to demo terms (no real data stored).</div>
+        </form>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- Cart drawer -->
+<div id="cartOverlay" class="overlay"></div>
+<div id="cartDrawer" class="drawer" aria-hidden="true">
+  <div class="head">
+    <h3>Your Cart</h3>
+    <button id="cartClose" class="close" aria-label="Close cart">✕</button>
+  </div>
+  <div id="cartItems" class="body"></div>
+  <div class="foot">
+    <div class="total">
+      <span>Total</span>
+      <span id="cartTotal">LKR 0</span>
+    </div>
+    <button id="checkoutBtn" class="primary-btn">Checkout</button>
+    <div class="note">Checkout requires sign in. This is a demo: it shows an alert and clears the cart.</div>
+  </div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
