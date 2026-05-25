@@ -1,5 +1,4 @@
-/* RedPulse App JS: Auth + Search + Marketplace Cart (LocalStorage)
-   Note: This is a frontend demo (no real backend). */
+
 
 const RP = {
   usersKey: "rp_users_v1",
