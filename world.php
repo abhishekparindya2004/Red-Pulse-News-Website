@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>RedPulse — World</title>
+  <link rel="stylesheet" href="style.css"/>
+    <link rel="icon" href="images/logo.png">
+</head>
+<body>
+
+<div class="topbar">
+  <div class="wrap">
+    <div class="left">
+      <span class="badge"><span class="dot"></span> LIVE</span>
+      <span>World Desk • Verified Updates</span>
+    </div>
+    <div class="right">
+      <a href="#" onclick="RP_UI.openAuth('signin')">Sign In</a>
+    </div>
+  </div>
+</div>
+
+<header class="site-header">
+  <div class="wrap">
+    <div class="brand">
+      <div class="logo-icon">RP</div>
+      <div>
+        <div class="logo-text">RedPulse</div>
+        <div class="small">World</div>
+      </div>
+    </div>
+
+    <nav class="nav">
+      <a href="index.php">Home</a>
+      <a href="world.php" class="active">World</a>
+      <a href="technology.php">Technology</a>
+      <a href="sports.php">Sports</a>
+      <a href="contact.php">Contact</a>
+    </nav>
+
+    <div class="header-actions">
+      <div class="search" title="Search within this section page">
+        <span style="font-weight:900;opacity:.7">⌕</span>
+        <input id="siteSearch" type="search" placeholder="Search World stories..."/>
+      </div>
+
+      <div id="signedOutActions" style="display:flex;gap:10px;align-items:center">
+        <button class="ghost-btn" onclick="RP_UI.openAuth('signin')">Sign In</button>
+        <button class="primary-btn" onclick="RP_UI.openAuth('signup')">Create Account</button>
+      </div>
+
+      <div id="signedInActions" style="display:none;gap:10px;align-items:center">
+        <span class="badge" style="color:#fff">Hi, <span id="whoLabel">User</span> 👋</span>
+        <button class="primary-btn" onclick="RP_UI.logout()">Logout</button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="ticker">
+  <div class="wrap">
+    <div class="label">WORLD</div>
+    <div class="scroll">
+      <span>World desk: headlines + explainers • Fast stories, deeper context, and student-friendly analysis • Use search to filter stories •</span>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="grid">
+
+    <main class="card pad">
+      <div class="h">
+        <h2>World desk: headlines + explainers</h2>
+        <div class="small">Fast stories, deeper context, and student-friendly analysis</div>
+      </div>
+
+      <div class="news-grid">
+        <article class="news-card" data-search="politics global leaders convene for climate summit what changed since last year a simple breakdown of promises funding and deadlines written for quick scanning">
+          <img src="images/w1.png" alt="">
+          <div class="body">
+            <span class="tag">Politics</span>
+            <h3>Global leaders convene for climate summit: what changed since last year</h3>
+            <p>A simple breakdown of promises, funding, and deadlines — written for quick scanning.</p>
+            <div class="meta-row"><span>6 min</span><a class="readmore" href="index.php#latest">More →</a></div>
+          </div>
+        </article>
+
+        <article class="news-card" data-search="diplomacy embassy operations adjust amid security concerns what closures mean travel advice and how diplomacy continues behind the scenes">
+          <img src="images/w2.png" alt="">
+          <div class="body">
+            <span class="tag">Diplomacy</span>
+            <h3>Embassy operations adjust amid security concerns</h3>
+            <p>What closures mean, travel advice, and how diplomacy continues behind the scenes.</p>
+            <div class="meta-row"><span>5 min</span><a class="readmore" href="contact.php">More →</a></div>
+          </div>
+        </article>
+
+        <article class="news-card" data-search="economy trade agreements reshape shipping routes and prices why logistics matter to everyday consumers and small businesses">
+          <img src="images/w3.png" alt="">
+          <div class="body">
+            <span class="tag">Economy</span>
+            <h3>Trade agreements reshape shipping routes and prices</h3>
+            <p>Why logistics matter to everyday consumers and small businesses.</p>
+            <div class="meta-row"><span>5 min</span><a class="readmore" href="index.php#latest">More →</a></div>
+          </div>
+        </article>
+
+      </div>
+    </main>
+
+    
+      <div class="widget">
+        <div class="h">
+          <h3>Most Read</h3>
+          <span class="small">Trending</span>
+        </div>
+
+        <div class="list">
+          <div>
+            <a href="technology.php">Why passwords still fail (and what to use instead)</a>
+            <div class="li">MFA, passkeys, and safer logins—explained simply.</div>
+          </div>
+          <div>
+            <a href="index.php">Map: global shipping routes that matter</a>
+            <div class="li">How trade moves, and why delays happen.</div>
+          </div>
+          <div>
+            <a href="sports.php">The tactics behind high-press football</a>
+            <div class="li">A beginner-friendly breakdown with examples.</div>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+  </div>
+</div>
+
+<footer>
+  <div class="wrap">
+    <div>
+      <h4>About RedPulse</h4>
+        </div>
+    <div>
+      <h4>Sections</h4>
+      <p>Home • World • Technology • Sports</p>
+    </div>
+    <div>
+      <h4>Support</h4>
+      <p>Contact us for feedback and issues. This is a front-end demo.</p>
+    </div>
+  </div>
+  <div class="bottom">
+    <span>© 2026 RedPulse PVT & LTD</span>
+    <span>Section: World</span>
+  </div>
+</footer>
+
+<div class="modal" id="authModal" aria-hidden="true">
+  <div class="panel" role="dialog" aria-modal="true">
+    <div class="side">
+      <div class="inner">
+        <h2>Account</h2>
+        <p>Sign in to save stories. Demo-only storage (browser LocalStorage).</p>
+        <div style="margin-top:14px" class="small">Password rule: 6+ chars, letters + numbers.</div>
+      </div>
+    </div>
+
+    <div class="content">
+      <div class="top">
+        <div>
+          <div style="font-weight:1000;font-size:16px">Sign in / Create</div>
+          <div class="small">Works on every page</div>
+        </div>
+        <button id="authClose" class="close" aria-label="Close">✕</button>
+      </div>
+
+      <div id="authInfo" class="ok"></div>
+
+      <div class="tabs">
+        <button class="tab active" data-tab="signin">Sign In</button>
+        <button class="tab" data-tab="signup">Create Account</button>
+      </div>
+
+      <div id="signinPanel">
+        <div id="signinErr" class="err"></div>
+        <form id="signinForm" class="form">
+          <div>
+            <label>Email</label>
+            <input id="siEmail" type="email" required placeholder="you@example.com"/>
+          </div>
+          <div>
+            <label>Password</label>
+            <input id="siPassword" type="password" required placeholder="••••••••"/>
+          </div>
+          <div class="help">
+            <a href="#" id="forgotLink">Forgot password?</a>
+            <span class="small">Demo</span>
+          </div>
+          <button class="primary-btn" type="submit">Sign In</button>
+        </form>
+      </div>
+
+      <div id="signupPanel" class="hide">
+        <div id="signupErr" class="err"></div>
+        <form id="signupForm" class="form">
+          <div>
+            <label>Full name</label>
+            <input id="suName" type="text" required placeholder="Your name"/>
+          </div>
+          <div>
+            <label>Email</label>
+            <input id="suEmail" type="email" required placeholder="you@example.com"/>
+          </div>
+          <div class="row2">
+            <div>
+              <label>Password</label>
+              <input id="suPassword" type="password" required placeholder="letters + numbers"/>
+            </div>
+            <div>
+              <label>Confirm</label>
+              <input id="suPassword2" type="password" required placeholder="repeat password"/>
+            </div>
+          </div>
+          <button class="primary-btn" type="submit">Create Account</button>
+          <div class="small">Demo terms: stored only in this browser.</div>
+        </form>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>

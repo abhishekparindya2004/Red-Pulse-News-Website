@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>RedPulse — Contact</title>
+    <link rel="icon" href="images/logo.png">
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="wrap">
+    <div class="left">
+      <span class="badge"><span class="dot"></span> SUPPORT</span>
+      <span>Contact the RedPulse team</span>
+    </div>
+    <div class="right">
+      <a href="#" onclick="RP_UI.openAuth('signin')">Sign In</a>
+    </div>
+  </div>
+</div>
+
+<header class="site-header">
+  <div class="wrap">
+    <div class="brand">
+      <div class="logo-icon">RP</div>
+      <div>
+        <div class="logo-text">RedPulse</div>
+        <div class="small">Support</div>
+      </div>
+    </div>
+
+    <nav class="nav">
+      <a href="index.php">Home</a>
+      <a href="world.php">World</a>
+      <a href="technology.php">Technology</a>
+      <a href="sports.php">Sports</a>
+      <a href="contact.php" class="active">Contact</a>
+    </nav>
+
+    <div class="header-actions">
+      <div class="search" title="Search on this page">
+        <span style="font-weight:900;opacity:.7">⌕</span>
+        <input id="siteSearch" type="search" placeholder="Search contact info, FAQ..."/>
+      </div>
+
+      <button id="cartBtn" class="icon-btn" title="Cart">
+        🛒 <span id="cartCount">0</span>
+      </button>
+
+      <div id="signedOutActions" style="display:flex;gap:10px;align-items:center">
+        <button class="ghost-btn" onclick="RP_UI.openAuth('signin')">Sign In</button>
+        <button class="primary-btn" onclick="RP_UI.openAuth('signup')">Create Account</button>
+      </div>
+
+      <div id="signedInActions" style="display:none;gap:10px;align-items:center">
+        <span class="badge" style="color:#fff">Hi, <span id="whoLabel">User</span> 👋</span>
+        <button class="primary-btn" onclick="RP_UI.logout()">Logout</button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="ticker">
+  <div class="wrap">
+    <div class="label">HELP</div>
+    <div class="scroll"><span>Accounts fixed • Marketplace checkout demo • Send feedback •</span></div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="grid">
+
+    <main class="card pad">
+      <div class="h">
+        <h2>Contact Us</h2>
+        <div class="small">We reply within 1–2 days (demo text)</div>
+      </div>
+
+      <div class="news-grid">
+        <div class="news-card" data-search="address location sri lanka colombo media avenue">
+          <img src="images/c1.png" alt="">
+          <div class="body">
+            <span class="tag">Address</span>
+            <h3>RedPulse News HQ</h3>
+            <p>123 Media Avenue, Colombo, Sri Lanka</p>
+            <div class="meta-row"><span>Mon–Fri</span><a class="readmore" href="#form">Message →</a></div>
+          </div>
+        </div>
+
+        <div class="news-card" data-search="email newsroom redpulse contact">
+          <img src="images/c2.png" alt="">
+          <div class="body">
+            <span class="tag">Email</span>
+            <h3>newsroom@redpulse.com</h3>
+            <p>For press, corrections, and partnerships (demo).</p>
+            <div class="meta-row"><span>Anytime</span><a class="readmore" href="#form">Write →</a></div>
+          </div>
+        </div>
+
+        <div class="news-card" data-search="phone hotline number">
+          <img src="images/c3.png">
+          <div class="body">
+            <span class="tag">Phone</span>
+            <h3>+94 76 224 2905</h3>
+            <p>For urgent issues during working hours (demo).</p>
+            <div class="meta-row"><span>9–5</span><a class="readmore" href="#faq">FAQ →</a></div>
+          </div>
+        </div>
+      </div>
+
+      <div id="form" class="card pad" style="margin-top:16px">
+        <div class="h">
+          <h2>Send a message</h2>
+          <div class="small">Form validation included</div>
+        </div>
+
+        <form class="form" onsubmit="event.preventDefault();alert('Message sent ✅ (demo)'); this.reset();">
+          <div class="row2">
+            <div>
+              <label>Your name</label>
+              <input required type="text" placeholder="Your name"/>
+            </div>
+            <div>
+              <label>Email</label>
+              <input required type="email" placeholder="you@example.com"/>
+            </div>
+          </div>
+          <div>
+            <label>Subject</label>
+            <input required type="text" placeholder="Login help / Partnership / Bug report"/>
+          </div>
+          <div>
+            <label>Message</label>
+            <input required type="text" placeholder="Type your message..."/>
+          </div>
+          <button class="primary-btn" type="submit">Send</button>
+          <div class="small">This is a demo site — the form shows an alert instead of sending email.</div>
+        </form>
+      </div>
+
+      <div id="faq" class="card pad" style="margin-top:16px">
+        <div class="h">
+          <h2>FAQ</h2>
+          <div class="small">Common issues</div>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <details data-search="login password wrong cannot sign in account">
+            <summary style="font-weight:1000;cursor:pointer">I can’t sign in. What should I do?</summary>
+            <div class="small" style="margin-top:8px">
+              Make sure you created an account first. This demo stores users in your browser LocalStorage.
+              If you clear site data, accounts will be removed.
+            </div>
+          </details>
+
+          <details data-search="create account not working signup issue">
+            <summary style="font-weight:1000;cursor:pointer">Create account button didn’t work before — fixed?</summary>
+            <div class="small" style="margin-top:8px">
+              Yes. You now have full validation + user saving + session state in <b>app.js</b>.
+            </div>
+          </details>
+
+          <details data-search="checkout cart payment">
+            <summary style="font-weight:1000;cursor:pointer">How does checkout work?</summary>
+            <div class="small" style="margin-top:8px">
+              Demo checkout shows an alert and clears the cart. Real checkout would call a backend payment API.
+            </div>
+          </details>
+        </div>
+      </div>
+
+    </main>
+
+    <aside class="card">
+      <div class="widget">
+        <div class="h">
+          <h3>Need quick help?</h3>
+          <span class="small">Actions</span>
+        </div>
+        <p class="small">If your account is not showing as signed in, try signing in again (demo session stored in browser).</p>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px">
+          <button class="primary-btn" onclick="RP_UI.openAuth('signin')">Sign In</button>
+          <button class="ghost-btn" onclick="RP_UI.openAuth('signup')">Create Account</button>
+        </div>
+
+        <hr class="soft"/>
+
+        <h3>Marketplace</h3>
+        <p class="small">Add any product from Home and checkout here too.</p>
+        <button class="primary-btn" onclick="location.href='index.php#market'">Open Marketplace</button>
+      </div>
+    </aside>
+
+  </div>
+</div>
+
+<footer>
+  <div class="wrap">
+    <div>
+      <h4>About RedPulse</h4>
+      </div>
+    <div>
+      <h4>Sections</h4>
+      <p>Home • World • Technology • Sports • Marketplace</p>
+    </div>
+    <div>
+      <h4>Contact</h4>
+      <p>Email: newsroom@redpulse.com<br/>Phone: +94 77 123 4567</p>
+    </div>
+  </div>
+  <div class="bottom">
+    <span>© 2026 RedPulse PVT & LTD </span>
+    <span>Support</span>
+  </div>
+</footer>
+
+
+<div class="modal" id="authModal" aria-hidden="true">
+  <div class="panel" role="dialog" aria-modal="true">
+    <div class="side">
+      <div class="inner">
+        <h2>Account</h2>
+        <p>Sign in to checkout and save stories. Demo-only storage (browser LocalStorage).</p>
+      </div>
+    </div>
+
+    <div class="content">
+      <div class="top">
+        <div>
+          <div style="font-weight:1000;font-size:16px">Sign in / Create</div>
+          <div class="small">Works on every page</div>
+        </div>
+        <button id="authClose" class="close" aria-label="Close">✕</button>
+      </div>
+
+      <div id="authInfo" class="ok"></div>
+
+      <div class="tabs">
+        <button class="tab active" data-tab="signin">Sign In</button>
+        <button class="tab" data-tab="signup">Create Account</button>
+      </div>
+
+      <div id="signinPanel">
+        <div id="signinErr" class="err"></div>
+        <form id="signinForm" class="form">
+          <div>
+            <label>Email</label>
+            <input id="siEmail" type="email" required placeholder="you@example.com"/>
+          </div>
+          <div>
+            <label>Password</label>
+            <input id="siPassword" type="password" required placeholder="••••••••"/>
+          </div>
+          <div class="help">
+            <a href="#" id="forgotLink">Forgot password?</a>
+            <span class="small">Demo</span>
+          </div>
+          <button class="primary-btn" type="submit">Sign In</button>
+        </form>
+      </div>
+
+      <div id="signupPanel" class="hide">
+        <div id="signupErr" class="err"></div>
+        <form id="signupForm" class="form">
+          <div>
+            <label>Full name</label>
+            <input id="suName" type="text" required placeholder="Your name"/>
+          </div>
+          <div>
+            <label>Email</label>
+            <input id="suEmail" type="email" required placeholder="you@example.com"/>
+          </div>
+          <div class="row2">
+            <div>
+              <label>Password</label>
+              <input id="suPassword" type="password" required placeholder="letters + numbers"/>
+            </div>
+            <div>
+              <label>Confirm</label>
+              <input id="suPassword2" type="password" required placeholder="repeat password"/>
+            </div>
+          </div>
+          <button class="primary-btn" type="submit">Create Account</button>
+          <div class="small">Demo terms: stored only in this browser.</div>
+        </form>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- Cart drawer -->
+<div id="cartOverlay" class="overlay"></div>
+<div id="cartDrawer" class="drawer" aria-hidden="true">
+  <div class="head">
+    <h3>Your Cart</h3>
+    <button id="cartClose" class="close" aria-label="Close cart">✕</button>
+  </div>
+  <div id="cartItems" class="body"></div>
+  <div class="foot">
+    <div class="total">
+      <span>Total</span>
+      <span id="cartTotal">LKR 0</span>
+    </div>
+    <button id="checkoutBtn" class="primary-btn">Checkout</button>
+    <div class="note">Checkout requires sign in. Demo clears cart.</div>
+  </div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>

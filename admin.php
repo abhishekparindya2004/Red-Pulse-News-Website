@@ -1,0 +1,1067 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>RedPulse — Admin</title>
+     <link rel="icon" href="images/logo.png">
+  <link rel="stylesheet" href="style.css"/>
+
+  <style>
+    /* Admin-only layout (keeps your theme; adds dashboard UI) */
+    body{background:var(--light)}
+    .admin-shell{max-width:var(--max);margin:auto;padding:18px 16px}
+    .admin-grid{display:grid;grid-template-columns: 280px 1fr;gap:16px}
+    @media(max-width:980px){.admin-grid{grid-template-columns:1fr}}
+
+    .admin-card{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);box-shadow:0 10px 26px rgba(0,0,0,.06);overflow:hidden}
+    .admin-pad{padding:16px}
+    .admin-title{display:flex;align-items:center;justify-content:space-between;gap:12px}
+    .admin-title h1{font-size:18px;margin:0}
+    .admin-sub{color:var(--muted);font-size:13px;line-height:1.45;margin-top:6px}
+
+    .side-menu{display:flex;flex-direction:column;gap:8px;padding:12px}
+    .side-btn{
+      text-align:left;width:100%;
+      padding:10px 12px;border-radius:12px;border:1px solid var(--border);
+      background:var(--white);font-weight:900;cursor:pointer;
+      display:flex;align-items:center;justify-content:space-between;gap:10px
+    }
+    .side-btn.active{border-color:rgba(196,0,0,.35);background:rgba(196,0,0,.08);color:var(--primary)}
+    .side-btn small{font-weight:800;color:var(--muted)}
+    .pill-mini{font-size:11px;padding:4px 8px;border-radius:999px;border:1px solid var(--border);color:var(--muted)}
+
+    .toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:12px}
+    .toolbar .ghost-btn,.toolbar .primary-btn{padding:10px 12px}
+
+    .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    @media(max-width:860px){.form-grid{grid-template-columns:1fr}}
+    .field label{display:block;font-size:12px;font-weight:900;color:var(--muted);margin-bottom:6px}
+    .field input,.field textarea,.field select{
+      width:100%;padding:12px;border-radius:12px;border:1px solid var(--border);outline:none
+    }
+    .field textarea{min-height:110px;resize:vertical}
+    .split{display:grid;grid-template-columns: 1.2fr .8fr;gap:12px;align-items:start}
+    @media(max-width:980px){.split{grid-template-columns:1fr}}
+    .table{width:100%;border-collapse:collapse}
+    .table th,.table td{padding:10px;border-bottom:1px solid var(--border);text-align:left;font-size:13px}
+    .table th{font-size:12px;color:var(--muted);font-weight:900;text-transform:uppercase;letter-spacing:.4px}
+    .row-actions{display:flex;gap:8px;flex-wrap:wrap}
+    .mini-btn{
+      padding:8px 10px;border-radius:10px;border:1px solid var(--border);
+      background:var(--white);font-weight:900;cursor:pointer;font-size:12px
+    }
+    .mini-btn.danger{border-color:rgba(196,0,0,.30);background:rgba(196,0,0,.06);color:var(--primary)}
+    .mini-btn:hover{box-shadow:0 8px 18px rgba(0,0,0,.08)}
+
+    .notice{display:none;margin-top:10px}
+    .notice.show{display:block}
+    .notice.ok{background:#f0fff4;border:1px solid rgba(34,197,94,.30);color:#14532d;padding:10px 12px;border-radius:12px;font-size:13px}
+    .notice.err{background:#fff1f1;border:1px solid rgba(196,0,0,.30);color:#7a1010;padding:10px 12px;border-radius:12px;font-size:13px}
+
+    /* Login */
+    .login-wrap{min-height:calc(100vh - 120px);display:grid;place-items:center;padding:16px}
+    .login-card{width:min(460px, 100%);background:var(--white);border:1px solid var(--border);border-radius:18px;box-shadow:0 20px 60px rgba(0,0,0,.12);overflow:hidden}
+    .login-head{background:linear-gradient(135deg,var(--primary),var(--primary-2));color:#fff;padding:18px}
+    .login-head h2{margin:0;font-size:18px}
+    .login-head p{margin-top:6px;opacity:.9;font-size:13px;line-height:1.5}
+    .hint{margin-top:10px;font-size:12px;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.18);padding:10px;border-radius:12px}
+    .hint b{color:#fff}
+    .hide{display:none!important}
+
+    code.k{background:rgba(0,0,0,.06);padding:3px 6px;border-radius:8px;font-weight:900}
+  </style>
+</head>
+<body>
+
+<!-- Topbar (keeps brand) -->
+<div class="topbar">
+  <div class="wrap">
+    <div class="left">
+      <span class="badge"><span class="dot"></span> ADMIN</span>
+      <span>RedPulse Control Center • Demo CMS</span>
+    </div>
+    <div class="right">
+      <a href="index.php">Back to site</a>
+    </div>
+  </div>
+</div>
+
+<!-- LOGIN VIEW -->
+<section id="loginView" class="login-wrap">
+  <div class="login-card">
+    <div class="login-head">
+      <h2>🔐 Admin Login</h2>
+      
+      <div class="hint">
+        <div><b>Hint</b></div>
+        <div>Username: <b>admin</b></div>
+        <div>Password: <b>admin123</b></div>
+      </div>
+    </div>
+
+    <div class="admin-pad">
+      <div id="loginMsg" class="notice err"></div>
+
+      <form id="loginForm" class="form">
+        <div class="field">
+          <label>Username</label>
+          <input id="loginUser" type="text" placeholder="admin" required />
+        </div>
+        <div class="field">
+          <label>Password</label>
+          <input id="loginPass" type="password" placeholder="admin123" required />
+        </div>
+
+        <div class="toolbar">
+          <button class="primary-btn" type="submit">Sign In</button>
+          <button class="ghost-btn" type="button" id="clearAllBtn" title="Clears admin/session/content in this browser only">Reset Demo Data</button>
+        </div>
+
+        <div class="admin-sub" style="margin-top:10px">
+          Saves login for <b>7 days</b> in this browser.
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- DASHBOARD VIEW -->
+<section id="dashView" class="admin-shell hide">
+
+  <div class="admin-card admin-pad">
+    <div class="admin-title">
+      <div>
+        <h1>RedPulse Admin Dashboard</h1>
+        <div class="admin-sub">
+          Manage everything from here (demo): stories, sections, ticker text, notifications, and settings.
+        </div>
+      </div>
+      <div class="toolbar" style="margin:0">
+        <span class="pill-mini">Signed in as <b id="adminName">admin</b></span>
+        <button class="ghost-btn" id="exportBtn">Export JSON</button>
+        <button class="ghost-btn" id="importBtn">Import JSON</button>
+        <button class="primary-btn" id="logoutBtn">Logout</button>
+      </div>
+    </div>
+
+    <div id="globalMsg" class="notice ok"></div>
+  </div>
+
+  <div class="admin-grid" style="margin-top:14px">
+
+    <!-- Sidebar -->
+    <aside class="admin-card">
+      <div class="side-menu">
+        <button class="side-btn active" data-page="stories">
+          Stories <small id="countStories">0</small>
+          <span class="pill-mini">Edit</span>
+        </button>
+        <button class="side-btn" data-page="ticker">
+          Ticker & Labels <small>Home/World/Tech/Sports</small>
+          <span class="pill-mini">Edit</span>
+        </button>
+        <button class="side-btn" data-page="notifications">
+          Notifications <small id="countNotifs">0</small>
+          <span class="pill-mini">Send</span>
+        </button>
+        <button class="side-btn" data-page="settings">
+          Site Settings <small>Branding</small>
+          <span class="pill-mini">Edit</span>
+        </button>
+        <button class="side-btn" data-page="htmlgen">
+          HTML Generator <small>Copy/Paste</small>
+          <span class="pill-mini">Build</span>
+        </button>
+        <button class="side-btn" data-page="help">
+          Help <small>How it works</small>
+          <span class="pill-mini">Info</span>
+        </button>
+      </div>
+    </aside>
+
+    <!-- Main panel -->
+    <main class="admin-card admin-pad">
+
+      <!-- STORIES -->
+      <div class="page" id="page-stories">
+        <div class="admin-title">
+          <div>
+            <h1 style="font-size:16px">Stories Manager</h1>
+            <div class="admin-sub">Add / edit / delete stories for each section page.</div>
+          </div>
+          <div class="toolbar" style="margin:0">
+            <button class="ghost-btn" id="newStoryBtn">+ New Story</button>
+            <button class="primary-btn" id="saveBtn">Save Changes</button>
+          </div>
+        </div>
+
+        <div class="split" style="margin-top:12px">
+          <div class="admin-card admin-pad" style="box-shadow:none">
+            <div class="form-grid">
+              <div class="field">
+                <label>Section</label>
+                <select id="stSection">
+                  <option value="home">Home</option>
+                  <option value="world">World</option>
+                  <option value="technology">Technology</option>
+                  <option value="sports">Sports</option>
+                </select>
+              </div>
+              <div class="field">
+                <label>Tag (badge)</label>
+                <input id="stTag" type="text" placeholder="e.g., Cybersecurity" />
+              </div>
+            </div>
+
+            <div class="field" style="margin-top:12px">
+              <label>Title</label>
+              <input id="stTitle" type="text" placeholder="Story headline..." />
+            </div>
+
+            <div class="field" style="margin-top:12px">
+              <label>Summary</label>
+              <textarea id="stSummary" placeholder="Short description (1–2 lines)..."></textarea>
+            </div>
+
+            <div class="form-grid" style="margin-top:12px">
+              <div class="field">
+                <label>Image URL (or local path like images/pic.jpg)</label>
+                <input id="stImage" type="text" placeholder="https://..." />
+              </div>
+              <div class="field">
+                <label>Read time (e.g., 5 min)</label>
+                <input id="stRead" type="text" placeholder="5 min" />
+              </div>
+            </div>
+
+            <div class="form-grid" style="margin-top:12px">
+              <div class="field">
+                <label>Link URL (optional)</label>
+                <input id="stLink" type="text" placeholder="index.php#latest or world.php" />
+              </div>
+              <div class="field">
+                <label>Search Keywords (comma separated)</label>
+                <input id="stKeywords" type="text" placeholder="ai, security, summit, ..." />
+              </div>
+            </div>
+
+            <div class="toolbar">
+              <button class="ghost-btn" id="clearFormBtn" type="button">Clear Form</button>
+              <button class="primary-btn" id="upsertStoryBtn" type="button">Add / Update</button>
+              <span class="admin-sub">Editing ID: <code class="k" id="editId">new</code></span>
+            </div>
+
+            <div class="admin-sub" style="margin-top:10px">
+              Stored locally under <code class="k">rp_content</code>. Open your site pages and they can read this data (see Help tab).
+            </div>
+          </div>
+
+          <div class="admin-card admin-pad" style="box-shadow:none">
+            <div class="admin-title">
+              <div>
+                <h1 style="font-size:14px;margin:0">Current Stories</h1>
+                <div class="admin-sub">Select a row to edit.</div>
+              </div>
+            </div>
+
+            <div style="overflow:auto;margin-top:10px">
+              <table class="table" id="storiesTable">
+                <thead>
+                  <tr>
+                    <th>Section</th>
+                    <th>Tag</th>
+                    <th>Title</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody><!-- filled by JS --></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TICKER -->
+      <div class="page hide" id="page-ticker">
+        <div class="admin-title">
+          <div>
+            <h1 style="font-size:16px">Ticker & Labels</h1>
+            <div class="admin-sub">Update the top breaking ticker text for each page.</div>
+          </div>
+          <div class="toolbar" style="margin:0">
+            <button class="primary-btn" id="saveTickerBtn">Save</button>
+          </div>
+        </div>
+
+        <div class="admin-sub" style="margin-top:10px">
+          These values can be read by your site pages (Help tab shows the small JS you add).
+        </div>
+
+        <div class="admin-card admin-pad" style="margin-top:12px;box-shadow:none">
+          <div class="form-grid">
+            <div class="field">
+              <label>Home label (left red box)</label>
+              <input id="tkHomeLabel" type="text" placeholder="BREAKING" />
+            </div>
+            <div class="field">
+              <label>Home ticker text</label>
+              <input id="tkHomeText" type="text" placeholder="Sri Lanka • Markets • AI • Sports ..." />
+            </div>
+
+            <div class="field">
+              <label>World label</label>
+              <input id="tkWorldLabel" type="text" placeholder="WORLD" />
+            </div>
+            <div class="field">
+              <label>World ticker text</label>
+              <input id="tkWorldText" type="text" placeholder="World desk: headlines + explainers ..." />
+            </div>
+
+            <div class="field">
+              <label>Technology label</label>
+              <input id="tkTechLabel" type="text" placeholder="TECHNOLOGY" />
+            </div>
+            <div class="field">
+              <label>Technology ticker text</label>
+              <input id="tkTechText" type="text" placeholder="Technology desk: practical tech news ..." />
+            </div>
+
+            <div class="field">
+              <label>Sports label</label>
+              <input id="tkSportsLabel" type="text" placeholder="SPORTS" />
+            </div>
+            <div class="field">
+              <label>Sports ticker text</label>
+              <input id="tkSportsText" type="text" placeholder="Sports desk: highlights + tactics ..." />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- NOTIFICATIONS -->
+      <div class="page hide" id="page-notifications">
+        <div class="admin-title">
+          <div>
+            <h1 style="font-size:16px">Notifications</h1>
+            <div class="admin-sub">Send announcements (demo): stored locally and can be shown on pages.</div>
+          </div>
+          <div class="toolbar" style="margin:0">
+            <button class="primary-btn" id="sendNotifBtn">Send Notification</button>
+          </div>
+        </div>
+
+        <div class="admin-card admin-pad" style="margin-top:12px;box-shadow:none">
+          <div class="form-grid">
+            <div class="field">
+              <label>Type</label>
+              <select id="nfType">
+                <option value="breaking">Breaking</option>
+                <option value="update">Update</option>
+                <option value="maintenance">Maintenance</option>
+                <option value="promo">Promo</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>Target page</label>
+              <select id="nfTarget">
+                <option value="all">All pages</option>
+                <option value="home">Home</option>
+                <option value="world">World</option>
+                <option value="technology">Technology</option>
+                <option value="sports">Sports</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="field" style="margin-top:12px">
+            <label>Message</label>
+            <textarea id="nfMessage" placeholder="Write your announcement..."></textarea>
+          </div>
+
+          <div class="form-grid" style="margin-top:12px">
+            <div class="field">
+              <label>Show as banner?</label>
+              <select id="nfBanner">
+                <option value="yes">Yes (top banner)</option>
+                <option value="no">No (stored only)</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>Expires (hours)</label>
+              <input id="nfExpire" type="number" min="1" value="24"/>
+            </div>
+          </div>
+        </div>
+
+        <div class="admin-card admin-pad" style="margin-top:12px;box-shadow:none">
+          <div class="admin-title">
+            <div>
+              <h1 style="font-size:14px;margin:0">Sent Notifications</h1>
+              <div class="admin-sub">You can delete old ones.</div>
+            </div>
+          </div>
+
+          <div style="overflow:auto;margin-top:10px">
+            <table class="table" id="notifTable">
+              <thead>
+                <tr>
+                  <th>Type</th>
+                  <th>Target</th>
+                  <th>Message</th>
+                  <th>Expires</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody><!-- filled by JS --></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- SETTINGS -->
+      <div class="page hide" id="page-settings">
+        <div class="admin-title">
+          <div>
+            <h1 style="font-size:16px">Site Settings</h1>
+            <div class="admin-sub">Brand + basic options (demo).</div>
+          </div>
+          <div class="toolbar" style="margin:0">
+            <button class="primary-btn" id="saveSettingsBtn">Save</button>
+          </div>
+        </div>
+
+        <div class="admin-card admin-pad" style="margin-top:12px;box-shadow:none">
+          <div class="form-grid">
+            <div class="field">
+              <label>Brand name</label>
+              <input id="setBrand" type="text" placeholder="RedPulse"/>
+            </div>
+            <div class="field">
+              <label>Tagline (small text)</label>
+              <input id="setTagline" type="text" placeholder="CNN-style layout • student demo"/>
+            </div>
+            <div class="field">
+              <label>Primary color (CSS)</label>
+              <input id="setPrimary" type="text" placeholder="#c40000"/>
+            </div>
+            <div class="field">
+              <label>Logo initials</label>
+              <input id="setLogo" type="text" placeholder="RP"/>
+            </div>
+          </div>
+
+          <div class="admin-sub" style="margin-top:10px">
+            Note: Because your pages use CSS variables, you can update them dynamically (Help tab shows how).
+          </div>
+        </div>
+      </div>
+
+      <!-- HTML GENERATOR -->
+      <div class="page hide" id="page-htmlgen">
+        <div class="admin-title">
+          <div>
+            <h1 style="font-size:16px">HTML Generator</h1>
+            <div class="admin-sub">Generates <b>&lt;article&gt;</b> blocks for each section’s <code class="k">.news-grid</code>.</div>
+          </div>
+          <div class="toolbar" style="margin:0">
+            <button class="ghost-btn" id="genHomeBtn">Generate Home</button>
+            <button class="ghost-btn" id="genWorldBtn">Generate World</button>
+            <button class="ghost-btn" id="genTechBtn">Generate Technology</button>
+            <button class="ghost-btn" id="genSportsBtn">Generate Sports</button>
+          </div>
+        </div>
+
+        <div class="admin-card admin-pad" style="margin-top:12px;box-shadow:none">
+          <div class="admin-sub">
+            Copy the generated HTML and paste it into the correct page inside <code class="k">&lt;div class="news-grid"&gt;</code>.
+          </div>
+          <div class="field" style="margin-top:10px">
+            <label>Generated HTML</label>
+            <textarea id="htmlOut" style="min-height:260px;font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace"></textarea>
+          </div>
+          <div class="toolbar">
+            <button class="primary-btn" id="copyHtmlBtn" type="button">Copy</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- HELP -->
+      <div class="page hide" id="page-help">
+        <div class="admin-title">
+          <div>
+            <h1 style="font-size:16px">Help / How this Admin Works</h1>
+            <div class="admin-sub">This is a demo CMS (browser LocalStorage). Use it for assignments.</div>
+          </div>
+        </div>
+
+        <div class="admin-card admin-pad" style="margin-top:12px;box-shadow:none">
+          <p class="admin-sub" style="margin:0">
+            ✅ Admin saves content in LocalStorage:
+            <br>• <code class="k">rp_content</code> (stories)
+            <br>• <code class="k">rp_ticker</code> (ticker labels/text)
+            <br>• <code class="k">rp_notifications</code> (notifications)
+            <br>• <code class="k">rp_settings</code> (brand settings)
+          </p>
+
+          <hr class="soft"/>
+
+          <p class="admin-sub" style="margin:0">
+            🔥 To make your pages automatically read ticker/settings/notifications,
+            you can add a tiny loader in your <b>app.js</b> (safe, front-end only).
+          </p>
+
+          <div class="field" style="margin-top:10px">
+            <label>Optional snippet to add in app.js (copy/paste)</label>
+            <textarea readonly style="min-height:230px;font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace">
+/* === RedPulse Admin Data Loader (optional) === */
+(function(){
+  const settings = JSON.parse(localStorage.getItem("rp_settings") || "{}");
+  if(settings.primary) document.documentElement.style.setProperty("--primary", settings.primary);
+  if(settings.brand) {
+    document.querySelectorAll(".logo-text").forEach(el=> el.textContent = settings.brand);
+  }
+  if(settings.logo) {
+    document.querySelectorAll(".logo-icon").forEach(el=> el.textContent = settings.logo);
+  }
+  if(settings.tagline) {
+    document.querySelectorAll(".brand .small").forEach(el=> el.textContent = settings.tagline);
+  }
+
+  const ticker = JSON.parse(localStorage.getItem("rp_ticker") || "{}");
+  const page = document.title.toLowerCase().includes("world") ? "world"
+            : document.title.toLowerCase().includes("technology") ? "technology"
+            : document.title.toLowerCase().includes("sports") ? "sports" : "home";
+  const labelEl = document.querySelector(".ticker .label");
+  const textEl  = document.querySelector(".ticker .scroll span");
+  if(labelEl && ticker[page]?.label) labelEl.textContent = ticker[page].label;
+  if(textEl  && ticker[page]?.text)  textEl.textContent  = ticker[page].text;
+
+  // Notification banner (if any active for this page)
+  const notifs = JSON.parse(localStorage.getItem("rp_notifications") || "[]");
+  const now = Date.now();
+  const active = notifs.find(n => (n.target==="all" || n.target===page) && n.banner==="yes" && n.expiresAt>now);
+  if(active){
+    const bar=document.createElement("div");
+    bar.style.cssText="background:#151923;color:#fff;padding:10px 16px;font-weight:900";
+    bar.textContent = (active.type.toUpperCase()+": ") + active.message;
+    const topbar=document.querySelector(".topbar");
+    topbar?.parentNode?.insertBefore(bar, topbar.nextSibling);
+  }
+})();
+            </textarea>
+          </div>
+
+          <div class="admin-sub" style="margin-top:10px">
+            For story lists, easiest is: use the <b>HTML Generator</b> tab and paste the generated cards into each page.
+            (Because your pages are static HTML.)
+          </div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+</section>
+
+<script>
+/* =========================================================
+   RedPulse Admin (DEMO)
+   - Login session saved (7 days)
+   - Manage stories (home/world/technology/sports)
+   - Manage ticker text/labels
+   - Send notifications (stored locally)
+   - Settings (brand / colors)
+   - Export/Import JSON
+   ========================================================= */
+
+const ADMIN_USER = "admin";
+const ADMIN_PASS = "admin123";
+
+const LS = {
+  session: "rp_admin_session",
+  content: "rp_content",
+  ticker: "rp_ticker",
+  notifs: "rp_notifications",
+  settings: "rp_settings"
+};
+
+// ---------- helpers ----------
+function now(){ return Date.now(); }
+function uid(){ return "id_" + Math.random().toString(16).slice(2) + "_" + Date.now().toString(16); }
+function read(key, fallback){
+  try { return JSON.parse(localStorage.getItem(key)) ?? fallback; }
+  catch { return fallback; }
+}
+function write(key, val){ localStorage.setItem(key, JSON.stringify(val)); }
+function showMsg(el, text, type="ok"){
+  el.className = "notice " + (type==="ok" ? "ok show" : "err show");
+  el.textContent = text;
+  setTimeout(()=>{ el.classList.remove("show"); }, 2400);
+}
+function escapeHtml(s=""){
+  return String(s)
+    .replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;").replaceAll("'","&#039;");
+}
+
+// ---------- default data ----------
+const DEFAULT_CONTENT = {
+  stories: [
+    // kept empty-ish; user will add. You can add starter examples if you want.
+  ]
+};
+const DEFAULT_TICKER = {
+  home:{ label:"BREAKING", text:"Sri Lanka • Markets • AI • Sports • Tech • World • Business • Subscribe •"},
+  world:{ label:"WORLD", text:"World desk: headlines + explainers • Fast stories, deeper context, student-friendly analysis •"},
+  technology:{ label:"TECHNOLOGY", text:"Technology desk: practical tech news • Security, AI, software, trends with examples •"},
+  sports:{ label:"SPORTS", text:"Sports desk: highlights + tactics • Fast headlines with simple tactical explanations •"}
+};
+const DEFAULT_SETTINGS = { brand:"RedPulse", tagline:"CNN-style layout • student demo", primary:"#c40000", logo:"RP" };
+
+// ---------- auth ----------
+function isAuthed(){
+  const s = read(LS.session, null);
+  if(!s) return false;
+  if(!s.exp || s.exp < now()) return false;
+  return s.user === ADMIN_USER;
+}
+function signIn(user){
+  write(LS.session, { user, exp: now() + 7*24*60*60*1000 }); // 7 days
+}
+function signOut(){
+  localStorage.removeItem(LS.session);
+}
+
+// ---------- init storage ----------
+function ensureData(){
+  if(!localStorage.getItem(LS.content)) write(LS.content, DEFAULT_CONTENT);
+  if(!localStorage.getItem(LS.ticker)) write(LS.ticker, DEFAULT_TICKER);
+  if(!localStorage.getItem(LS.settings)) write(LS.settings, DEFAULT_SETTINGS);
+  if(!localStorage.getItem(LS.notifs)) write(LS.notifs, []);
+}
+
+// ---------- UI refs ----------
+const loginView = document.getElementById("loginView");
+const dashView  = document.getElementById("dashView");
+
+const loginForm = document.getElementById("loginForm");
+const loginMsg  = document.getElementById("loginMsg");
+const clearAllBtn= document.getElementById("clearAllBtn");
+
+const logoutBtn = document.getElementById("logoutBtn");
+const globalMsg = document.getElementById("globalMsg");
+
+const sideBtns = Array.from(document.querySelectorAll(".side-btn"));
+const pages = {
+  stories: document.getElementById("page-stories"),
+  ticker: document.getElementById("page-ticker"),
+  notifications: document.getElementById("page-notifications"),
+  settings: document.getElementById("page-settings"),
+  htmlgen: document.getElementById("page-htmlgen"),
+  help: document.getElementById("page-help")
+};
+
+// stories refs
+const stSection = document.getElementById("stSection");
+const stTag = document.getElementById("stTag");
+const stTitle = document.getElementById("stTitle");
+const stSummary = document.getElementById("stSummary");
+const stImage = document.getElementById("stImage");
+const stRead = document.getElementById("stRead");
+const stLink = document.getElementById("stLink");
+const stKeywords = document.getElementById("stKeywords");
+const editId = document.getElementById("editId");
+const storiesTable = document.getElementById("storiesTable").querySelector("tbody");
+const countStories = document.getElementById("countStories");
+
+const newStoryBtn = document.getElementById("newStoryBtn");
+const clearFormBtn = document.getElementById("clearFormBtn");
+const upsertStoryBtn = document.getElementById("upsertStoryBtn");
+const saveBtn = document.getElementById("saveBtn");
+
+// ticker refs
+const tkHomeLabel = document.getElementById("tkHomeLabel");
+const tkHomeText = document.getElementById("tkHomeText");
+const tkWorldLabel = document.getElementById("tkWorldLabel");
+const tkWorldText = document.getElementById("tkWorldText");
+const tkTechLabel = document.getElementById("tkTechLabel");
+const tkTechText = document.getElementById("tkTechText");
+const tkSportsLabel = document.getElementById("tkSportsLabel");
+const tkSportsText = document.getElementById("tkSportsText");
+const saveTickerBtn = document.getElementById("saveTickerBtn");
+
+// notifications refs
+const nfType = document.getElementById("nfType");
+const nfTarget = document.getElementById("nfTarget");
+const nfMessage = document.getElementById("nfMessage");
+const nfBanner = document.getElementById("nfBanner");
+const nfExpire = document.getElementById("nfExpire");
+const sendNotifBtn = document.getElementById("sendNotifBtn");
+const notifTable = document.getElementById("notifTable").querySelector("tbody");
+const countNotifs = document.getElementById("countNotifs");
+
+// settings refs
+const setBrand = document.getElementById("setBrand");
+const setTagline = document.getElementById("setTagline");
+const setPrimary = document.getElementById("setPrimary");
+const setLogo = document.getElementById("setLogo");
+const saveSettingsBtn = document.getElementById("saveSettingsBtn");
+
+// export/import
+const exportBtn = document.getElementById("exportBtn");
+const importBtn = document.getElementById("importBtn");
+
+// html gen
+const genHomeBtn = document.getElementById("genHomeBtn");
+const genWorldBtn = document.getElementById("genWorldBtn");
+const genTechBtn = document.getElementById("genTechBtn");
+const genSportsBtn = document.getElementById("genSportsBtn");
+const htmlOut = document.getElementById("htmlOut");
+const copyHtmlBtn = document.getElementById("copyHtmlBtn");
+
+// ---------- navigation ----------
+function openPage(name){
+  sideBtns.forEach(b=> b.classList.toggle("active", b.dataset.page===name));
+  Object.keys(pages).forEach(k=> pages[k].classList.toggle("hide", k!==name));
+}
+sideBtns.forEach(btn=>{
+  btn.addEventListener("click", ()=> openPage(btn.dataset.page));
+});
+
+// ---------- stories ----------
+function resetStoryForm(){
+  editId.textContent = "new";
+  stSection.value = "home";
+  stTag.value = "";
+  stTitle.value = "";
+  stSummary.value = "";
+  stImage.value = "";
+  stRead.value = "5 min";
+  stLink.value = "";
+  stKeywords.value = "";
+}
+function getStoryForm(){
+  return {
+    id: editId.textContent === "new" ? uid() : editId.textContent,
+    section: stSection.value,
+    tag: stTag.value.trim() || "News",
+    title: stTitle.value.trim(),
+    summary: stSummary.value.trim(),
+    image: stImage.value.trim(),
+    read: stRead.value.trim() || "5 min",
+    link: stLink.value.trim() || "index.php",
+    keywords: stKeywords.value.trim()
+  };
+}
+function validateStory(s){
+  if(!s.title) return "Title is required";
+  if(!s.summary) return "Summary is required";
+  if(!s.image) return "Image URL/path is required";
+  return null;
+}
+function renderStories(){
+  const data = read(LS.content, DEFAULT_CONTENT);
+  const stories = data.stories || [];
+  countStories.textContent = stories.length;
+
+  storiesTable.innerHTML = stories.map(s=> `
+    <tr>
+      <td><b>${escapeHtml(s.section)}</b></td>
+      <td>${escapeHtml(s.tag)}</td>
+      <td>${escapeHtml(s.title)}</td>
+      <td>
+        <div class="row-actions">
+          <button class="mini-btn" data-act="edit" data-id="${s.id}">Edit</button>
+          <button class="mini-btn danger" data-act="del" data-id="${s.id}">Delete</button>
+        </div>
+      </td>
+    </tr>
+  `).join("") || `<tr><td colspan="4" class="admin-sub">No stories yet. Click <b>+ New Story</b> and add your first one.</td></tr>`;
+
+  // bind actions
+  storiesTable.querySelectorAll("button").forEach(btn=>{
+    btn.addEventListener("click", ()=>{
+      const act = btn.dataset.act;
+      const id = btn.dataset.id;
+      if(act==="edit") loadStory(id);
+      if(act==="del") deleteStory(id);
+    });
+  });
+}
+function loadStory(id){
+  const data = read(LS.content, DEFAULT_CONTENT);
+  const s = (data.stories||[]).find(x=> x.id===id);
+  if(!s) return;
+  editId.textContent = s.id;
+  stSection.value = s.section;
+  stTag.value = s.tag;
+  stTitle.value = s.title;
+  stSummary.value = s.summary;
+  stImage.value = s.image;
+  stRead.value = s.read;
+  stLink.value = s.link;
+  stKeywords.value = s.keywords || "";
+  showMsg(globalMsg, "Loaded story for editing ✅", "ok");
+}
+function deleteStory(id){
+  const data = read(LS.content, DEFAULT_CONTENT);
+  data.stories = (data.stories||[]).filter(x=> x.id!==id);
+  write(LS.content, data);
+  if(editId.textContent===id) resetStoryForm();
+  renderStories();
+  showMsg(globalMsg, "Story deleted ✅", "ok");
+}
+function upsertStory(){
+  const s = getStoryForm();
+  const err = validateStory(s);
+  if(err){ showMsg(globalMsg, err, "err"); return; }
+
+  const data = read(LS.content, DEFAULT_CONTENT);
+  data.stories = data.stories || [];
+  const idx = data.stories.findIndex(x=> x.id===s.id);
+  if(idx>=0) data.stories[idx] = s;
+  else data.stories.unshift(s);
+
+  write(LS.content, data);
+  editId.textContent = s.id;
+  renderStories();
+  showMsg(globalMsg, (idx>=0 ? "Story updated ✅" : "Story added ✅"), "ok");
+}
+
+// ---------- ticker ----------
+function loadTicker(){
+  const t = read(LS.ticker, DEFAULT_TICKER);
+  tkHomeLabel.value = t.home?.label || "";
+  tkHomeText.value  = t.home?.text || "";
+  tkWorldLabel.value= t.world?.label || "";
+  tkWorldText.value = t.world?.text || "";
+  tkTechLabel.value = t.technology?.label || "";
+  tkTechText.value  = t.technology?.text || "";
+  tkSportsLabel.value= t.sports?.label || "";
+  tkSportsText.value = t.sports?.text || "";
+}
+function saveTicker(){
+  const t = {
+    home:{ label: tkHomeLabel.value.trim() || "BREAKING", text: tkHomeText.value.trim() || "" },
+    world:{ label: tkWorldLabel.value.trim() || "WORLD", text: tkWorldText.value.trim() || "" },
+    technology:{ label: tkTechLabel.value.trim() || "TECHNOLOGY", text: tkTechText.value.trim() || "" },
+    sports:{ label: tkSportsLabel.value.trim() || "SPORTS", text: tkSportsText.value.trim() || "" }
+  };
+  write(LS.ticker, t);
+  showMsg(globalMsg, "Ticker saved ✅", "ok");
+}
+
+// ---------- notifications ----------
+function renderNotifs(){
+  const notifs = read(LS.notifs, []);
+  countNotifs.textContent = notifs.length;
+
+  notifTable.innerHTML = notifs.map(n=> `
+    <tr>
+      <td><b>${escapeHtml(n.type)}</b></td>
+      <td>${escapeHtml(n.target)}</td>
+      <td>${escapeHtml(n.message)}</td>
+      <td>${new Date(n.expiresAt).toLocaleString()}</td>
+      <td>
+        <button class="mini-btn danger" data-id="${n.id}">Delete</button>
+      </td>
+    </tr>
+  `).join("") || `<tr><td colspan="5" class="admin-sub">No notifications yet.</td></tr>`;
+
+  notifTable.querySelectorAll("button").forEach(btn=>{
+    btn.addEventListener("click", ()=>{
+      const id = btn.dataset.id;
+      const notifs2 = read(LS.notifs, []).filter(x=> x.id!==id);
+      write(LS.notifs, notifs2);
+      renderNotifs();
+      showMsg(globalMsg, "Notification deleted ✅", "ok");
+    });
+  });
+}
+function sendNotif(){
+  const message = nfMessage.value.trim();
+  if(!message){ showMsg(globalMsg, "Notification message is required", "err"); return; }
+  const hours = Math.max(1, parseInt(nfExpire.value || "24", 10));
+  const n = {
+    id: uid(),
+    type: nfType.value,
+    target: nfTarget.value,
+    banner: nfBanner.value,
+    message,
+    createdAt: now(),
+    expiresAt: now() + hours*60*60*1000
+  };
+  const list = read(LS.notifs, []);
+  list.unshift(n);
+  write(LS.notifs, list);
+  nfMessage.value = "";
+  renderNotifs();
+  showMsg(globalMsg, "Notification sent ✅", "ok");
+}
+
+// ---------- settings ----------
+function loadSettings(){
+  const s = read(LS.settings, DEFAULT_SETTINGS);
+  setBrand.value = s.brand || "RedPulse";
+  setTagline.value = s.tagline || "";
+  setPrimary.value = s.primary || "#c40000";
+  setLogo.value = s.logo || "RP";
+}
+function saveSettings(){
+  const s = {
+    brand: setBrand.value.trim() || "RedPulse",
+    tagline: setTagline.value.trim() || "",
+    primary: setPrimary.value.trim() || "#c40000",
+    logo: setLogo.value.trim() || "RP"
+  };
+  write(LS.settings, s);
+  showMsg(globalMsg, "Settings saved ✅", "ok");
+}
+
+// ---------- export/import ----------
+function exportAll(){
+  const payload = {
+    content: read(LS.content, DEFAULT_CONTENT),
+    ticker: read(LS.ticker, DEFAULT_TICKER),
+    notifications: read(LS.notifs, []),
+    settings: read(LS.settings, DEFAULT_SETTINGS),
+    exportedAt: new Date().toISOString()
+  };
+  const blob = new Blob([JSON.stringify(payload, null, 2)], {type:"application/json"});
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "redpulse_admin_export.json";
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
+function importAll(){
+  const input = document.createElement("input");
+  input.type="file";
+  input.accept="application/json";
+  input.onchange = () => {
+    const file = input.files?.[0];
+    if(!file) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      try{
+        const obj = JSON.parse(reader.result);
+        if(obj.content) write(LS.content, obj.content);
+        if(obj.ticker) write(LS.ticker, obj.ticker);
+        if(obj.notifications) write(LS.notifs, obj.notifications);
+        if(obj.settings) write(LS.settings, obj.settings);
+        renderStories(); loadTicker(); renderNotifs(); loadSettings();
+        showMsg(globalMsg, "Import successful ✅", "ok");
+      }catch(e){
+        showMsg(globalMsg, "Invalid JSON file", "err");
+      }
+    };
+    reader.readAsText(file);
+  };
+  input.click();
+}
+
+// ---------- html generator ----------
+function buildArticlesHTML(section){
+  const data = read(LS.content, DEFAULT_CONTENT);
+  const list = (data.stories||[]).filter(s=> s.section===section);
+  if(!list.length){
+    return `<!-- No stories found for section "${section}". Add stories in Admin → Stories Manager -->`;
+  }
+  return list.map(s => {
+    const search = escapeHtml((s.keywords||"").replaceAll(",", " "));
+    return `<article class="news-card" data-search="${search}">
+  <img src="${escapeHtml(s.image)}" alt="">
+  <div class="body">
+    <span class="tag">${escapeHtml(s.tag)}</span>
+    <h3>${escapeHtml(s.title)}</h3>
+    <p>${escapeHtml(s.summary)}</p>
+    <div class="meta-row"><span>${escapeHtml(s.read || "5 min")}</span><a class="readmore" href="${escapeHtml(s.link || "index.php")}">More →</a></div>
+  </div>
+</article>`;
+  }).join("\n");
+}
+function setHtmlOut(section){
+  htmlOut.value = buildArticlesHTML(section);
+  showMsg(globalMsg, `Generated HTML for ${section.toUpperCase()} ✅`, "ok");
+}
+
+// ---------- bind events ----------
+loginForm.addEventListener("submit", (e)=>{
+  e.preventDefault();
+  const u = document.getElementById("loginUser").value.trim();
+  const p = document.getElementById("loginPass").value.trim();
+  if(u===ADMIN_USER && p===ADMIN_PASS){
+    ensureData();
+    signIn(u);
+    boot();
+  }else{
+    loginMsg.className = "notice err show";
+    loginMsg.textContent = "Invalid admin login";
+  }
+});
+
+clearAllBtn.addEventListener("click", ()=>{
+  if(confirm("Reset demo data in this browser? This clears admin session + content.")){
+    Object.values(LS).forEach(k=> localStorage.removeItem(k));
+    showMsg(loginMsg, "Demo data cleared. Reloading…", "ok");
+    setTimeout(()=> location.reload(), 800);
+  }
+});
+
+logoutBtn?.addEventListener("click", ()=>{
+  signOut();
+  location.reload();
+});
+
+newStoryBtn.addEventListener("click", resetStoryForm);
+clearFormBtn.addEventListener("click", resetStoryForm);
+upsertStoryBtn.addEventListener("click", upsertStory);
+saveBtn.addEventListener("click", ()=> showMsg(globalMsg, "All changes are already saved when you Add/Update ✅", "ok"));
+
+saveTickerBtn.addEventListener("click", saveTicker);
+sendNotifBtn.addEventListener("click", sendNotif);
+saveSettingsBtn.addEventListener("click", saveSettings);
+
+exportBtn.addEventListener("click", exportAll);
+importBtn.addEventListener("click", importAll);
+
+genHomeBtn.addEventListener("click", ()=> setHtmlOut("home"));
+genWorldBtn.addEventListener("click", ()=> setHtmlOut("world"));
+genTechBtn.addEventListener("click", ()=> setHtmlOut("technology"));
+genSportsBtn.addEventListener("click", ()=> setHtmlOut("sports"));
+
+copyHtmlBtn.addEventListener("click", async ()=>{
+  try{
+    await navigator.clipboard.writeText(htmlOut.value || "");
+    showMsg(globalMsg, "Copied ✅", "ok");
+  }catch{
+    showMsg(globalMsg, "Copy failed (browser blocked). Select and copy manually.", "err");
+  }
+});
+
+// ---------- boot ----------
+function boot(){
+  ensureData();
+
+  if(isAuthed()){
+    loginView.classList.add("hide");
+    dashView.classList.remove("hide");
+    document.getElementById("adminName").textContent = ADMIN_USER;
+
+    resetStoryForm();
+    renderStories();
+    loadTicker();
+    renderNotifs();
+    loadSettings();
+    openPage("stories");
+  }else{
+    dashView.classList.add("hide");
+    loginView.classList.remove("hide");
+  }
+}
+boot();
+</script>
+
+</body>
+</html>
